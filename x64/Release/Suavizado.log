@@ -1,0 +1,37 @@
+﻿  Suavizado pragma.cpp
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado pragma.cpp(117,125): warning C4244: '=': conversión de 'double' a '_Tp'; posible pérdida de datos
+          with
+          [
+              _Tp=uchar
+          ]
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado pragma.cpp(118,128): warning C4244: '=': conversión de 'double' a '_Tp'; posible pérdida de datos
+          with
+          [
+              _Tp=uchar
+          ]
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado pragma.cpp(119,128): warning C4244: '=': conversión de 'double' a '_Tp'; posible pérdida de datos
+          with
+          [
+              _Tp=uchar
+          ]
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado pragma.cpp(240,135): warning C4244: '=': conversión de 'double' a '_Tp'; posible pérdida de datos
+          with
+          [
+              _Tp=uchar
+          ]
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado pragma.cpp(241,139): warning C4244: '=': conversión de 'double' a '_Tp'; posible pérdida de datos
+          with
+          [
+              _Tp=uchar
+          ]
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado pragma.cpp(242,139): warning C4244: '=': conversión de 'double' a '_Tp'; posible pérdida de datos
+          with
+          [
+              _Tp=uchar
+          ]
+  Generando código
+  3 of 134 functions ( 2.2%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
+  Generación de código finalizada
+  Suavizado.vcxproj -> C:\Users\gaizk\source\repos\Suavizado\x64\Release\Suavizado.exe

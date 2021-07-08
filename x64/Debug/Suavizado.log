@@ -1,0 +1,17 @@
+﻿  Suavizado pragma.cpp
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado pragma.cpp(117,125): warning C4244: '=': conversión de 'double' a '_Tp'; posible pérdida de datos
+          with
+          [
+              _Tp=uchar
+          ]
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado pragma.cpp(118,128): warning C4244: '=': conversión de 'double' a '_Tp'; posible pérdida de datos
+          with
+          [
+              _Tp=uchar
+          ]
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado pragma.cpp(119,128): warning C4244: '=': conversión de 'double' a '_Tp'; posible pérdida de datos
+          with
+          [
+              _Tp=uchar
+          ]
+  Suavizado.vcxproj -> C:\Users\gaizk\source\repos\Suavizado\x64\Debug\Suavizado.exe

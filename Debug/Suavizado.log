@@ -1,0 +1,12 @@
+﻿  Suavizado pragma.cpp
+  Suavizado.cpp
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado.cpp(160,28): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado.cpp(161,28): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado.cpp(164,28): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado.cpp(165,28): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado.cpp(193,27): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado.cpp(212,24): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado.cpp(229,63): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
+  Generando código...
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado.cpp(156): error C4700: se utilizó la variable local 'size' sin inicializar
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado.cpp(204): error C4700: se utilizó la variable local 'rank' sin inicializar
