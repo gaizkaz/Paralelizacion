@@ -1,17 +1,7 @@
-﻿  Suavizado pragma.cpp
-C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado pragma.cpp(117,125): warning C4244: '=': conversión de 'double' a '_Tp'; posible pérdida de datos
-          with
-          [
-              _Tp=uchar
-          ]
-C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado pragma.cpp(118,128): warning C4244: '=': conversión de 'double' a '_Tp'; posible pérdida de datos
-          with
-          [
-              _Tp=uchar
-          ]
-C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado pragma.cpp(119,128): warning C4244: '=': conversión de 'double' a '_Tp'; posible pérdida de datos
-          with
-          [
-              _Tp=uchar
-          ]
+﻿  Suavizado.cpp
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado.cpp(218,63): warning C4267: 'inicializando': conversión de 'size_t' a 'int'; posible pérdida de datos
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado.cpp(139,17): warning C4101: 'request': variable local sin referencia
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado.cpp(140,16): warning C4101: 'status': variable local sin referencia
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado.cpp(149,9): warning C4101: 'i': variable local sin referencia
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado.cpp(264,9): warning C4101: 'i': variable local sin referencia
   Suavizado.vcxproj -> C:\Users\gaizk\source\repos\Suavizado\x64\Debug\Suavizado.exe
