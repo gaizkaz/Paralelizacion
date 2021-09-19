@@ -191,8 +191,8 @@ void dobleBucleParalelizado(int size, int rank) {
     int rangoBucle1;
     int rangoBucle2;
     if (size % 2 == 0) {
-        rangoBucle1 = floor((image.rows - 1) / (size / 2.0));
-        rangoBucle2 = floor(image.cols / 2);
+        rangoBucle1 = floor(image.rows / 2.0);
+        rangoBucle2 = floor(image.cols / (size / 2));
     }
     else {
         rangoBucle1 = floor((image.cols - 1) / floor(size / 2));
@@ -208,25 +208,37 @@ void dobleBucleParalelizado(int size, int rank) {
 
     if (size > 3) {
         if (hilos_pares) {
-            if (rank % 2 == 0) {
+            //if (rank % 2 == 0) {
+            if (rank < size / 2) {
                 inicio = 4;
-                inicio += rangoBucle1 * (rank / 2);
-                fin = inicio + rangoBucle1 - 1;
-                if (fin > image.rows - 4) {
-                    fin = image.rows - 4;
-                }
-                inicio2 = 4;
-                fin2 = inicio2 + rangoBucle2 - 1;
+                fin = image.rows / 2;
+
+
             }
             else {
-                inicio = 4 + rangoBucle2 * ((rank - 1) / 2);
-                fin = inicio + rangoBucle2 - 1;
-                if (fin > image.rows - 4) {
-                    fin = image.rows - 4;
-                }
-                inicio2 = inicio2 + rangoBucle2;
+                inicio = (image.rows / 2) + 1;
+                fin = image.rows - 4;
+            }
+            //inicio += rangoBucle1 * (rank / 2);
+            //fin = inicio + rangoBucle1 - 1;
+            //if (fin > image.rows -4) {
+            //    fin = image.rows - 4;
+            //}
+            inicio2 = 4 + rangoBucle2 * ((rank) % (size / 2));
+            fin2 = inicio2 + rangoBucle2 - 1;// * ((rank +1) % (size/2))
+            if (fin2 > image.cols - 4) {
                 fin2 = image.cols - 4;
             }
+            //}
+            //else {
+            //    inicio = 4 + rangoBucle2 * ((rank-1) / 2);
+            //    fin = inicio + rangoBucle2 -1;
+            //    if (fin > image.rows -4) {
+            //        fin = image.rows - 4;
+            //    }
+            //    inicio2 = inicio2 + rangoBucle2;
+            //    fin2 = image.cols - 4;
+            //}
         }
         else {
             //int turno = floor(size / 2);
@@ -273,7 +285,7 @@ void dobleBucleParalelizado(int size, int rank) {
         }
     }
 
-    //std::cout << "inicio: " << inicio << " fin: " << fin << " inicio2: " << inicio2 << " fin2: " << fin2 << " rank: " << rank << endl;
+    std::cout << "inicio: " << inicio << " fin: " << fin << " inicio2: " << inicio2 << " fin2: " << fin2 << " rank: " << rank << endl;
 
     for (int x = inicio; x <= fin; x++) {
         for (int y = inicio2; y <= fin2; y++) {
@@ -291,6 +303,19 @@ void dobleBucleParalelizado(int size, int rank) {
             }
         }
     }
+
+
+    //Conversión de Mat a array numérico
+    int sizeMat = outputImage.total() * outputImage.elemSize();
+    byte* bytes = new byte[sizeMat]; // you will have to delete[] that later
+    byte* bytes2 = new byte[sizeMat];
+
+    std::memset(bytes2, 0, sizeMat);
+
+    std::memcpy(bytes, outputImage.data, sizeMat * sizeof(byte));
+
+    //Join del resultado de los hilos en el hilo con la id = 0
+    MPI_Reduce(bytes, bytes2, sizeMat, MPI_INTEGER1, MPI_MAX, 0, MPI_COMM_WORLD);
 
 
 
