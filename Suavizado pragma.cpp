@@ -143,7 +143,7 @@ void suavizadoGauss5() { //suavizado de 5*5 con matriz de gauss
 
 void abrirImagen() {
     string path = get_current_dir();
-    path = path + "\\coche.jpg";
+    path = path + "\\skyline.jpg";
     //path = path + "\\monte.png";
     //path = path + "\\coche.jpg";
     //path = path + "\\MapaMundi_110.png";
@@ -165,13 +165,12 @@ int main(int argc, char* argv[])
     
     abrirImagen();
 
-    for (int w = 0; w < 5; w++) { // ejecución del código 5 veces
+    //for (int w = 0; w < 5; w++) { // ejecución del código 5 veces
 
         t0 = clock();
-        int count = 0;
+
 #pragma omp parallel for num_threads(2)
         for (int x = 3; x <= image.rows - 4; x++) {
-            #pragma omp parallel for num_threads(2)
             for (int y = 3; y <= image.cols - 4; y++) {
                 for (int z = 0; z <= 2; z++) {
 
@@ -186,26 +185,34 @@ int main(int argc, char* argv[])
             }
         }
 
+        //#pragma omp parallel for num_threads(6)
+        //for (int x = 1; x <= image.rows - 2; x++) {
+        //    for (int y = 1; y <= image.cols - 2; y++) {
+        //        outputImage.at<uchar>(x, y * 3) = (int)image.at<Vec3b>(x, y)[0] * 0.1140 + (int)image.at<Vec3b>(x, y)[1] * 0.5870 + (int)image.at<Vec3b>(x, y)[2] * 0.2989;
+        //        outputImage.at<uchar>(x, y * 3 + 1) = (int)image.at<Vec3b>(x, y)[0] * 0.1140 + (int)image.at<Vec3b>(x, y)[1] * 0.5870 + (int)image.at<Vec3b>(x, y)[2] * 0.2989;
+        //        outputImage.at<uchar>(x, y * 3 + 2) = (int)image.at<Vec3b>(x, y)[0] * 0.1140 + (int)image.at<Vec3b>(x, y)[1] * 0.5870 + (int)image.at<Vec3b>(x, y)[2] * 0.2989;
+        //    }
+        //}
 
-        t1 = clock();
-        double time = (double(t1 - t0) / CLOCKS_PER_SEC);
-        cout << "Execution Time: " << time << ", " << endl;
-    }
+        //t1 = clock();
+        //double time = (double(t1 - t0) / CLOCKS_PER_SEC);
+        //cout << "Execution Time: " << time << ", " << endl;
+    //}
 
     try {
 
       //image.convertTo(prueba, CV_8UC3); //Solo a color
       //imshow("Display window 1", prueba); //Solo a color
 
+            imshow("Display window 1", image);
+            waitKey(0);
 
-      imshow("Display window 1", image);
-      waitKey(0);
 
-
-      //outputImage.convertTo(prueba, CV_8UC3); //Solo a color
-      //imshow("Display window 2", prueba); //Solo a color
-      imshow("Display window 2", outputImage); //gris
-      waitKey(0);
+            //outputImage.convertTo(prueba, CV_8UC3); //Solo a color
+            //imshow("Display window 2", prueba); //Solo a color
+            imshow("Display window 2", outputImage); //gris
+            waitKey(0);
+        
     } catch (cv::Exception& ex) {
         cerr << "opencv exception: " +ex.err << endl;
     }

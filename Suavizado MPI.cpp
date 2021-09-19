@@ -115,8 +115,9 @@ void abrirImagen() { // Abre la imagen
 
     string path = get_current_dir();
     //path = path + "\\ruido.jpg";
-    path = path + "\\coche.jpg";
+    //path = path + "\\coche.jpg";
 
+    path = path + "\\skyline.jpg";
     image = imread(path, IMREAD_COLOR);
     image.convertTo(image, CV_8UC3);
 
@@ -321,8 +322,8 @@ int main(int argc, char* argv[])
     int rangoBucle1;
     int rangoBucle2;
     if (size % 2 == 0) {
-        rangoBucle1 = floor((image.rows - 1) / (size / 2.0));
-        rangoBucle2 = floor(image.cols / 2);
+        rangoBucle1 = floor(image.rows / 2.0);
+        rangoBucle2 = floor(image.cols / (size/2));
     }
     else {
         rangoBucle1 = floor((image.cols - 1) / floor(size/2));
@@ -338,25 +339,37 @@ int main(int argc, char* argv[])
 
     if (size > 3) {
         if (hilos_pares) {
-            if (rank % 2 == 0) {
-                inicio = 4;
-                inicio += rangoBucle1 * (rank / 2);
-                fin = inicio + rangoBucle1 - 1;
-                if (fin > image.rows -4) {
+            //if (rank % 2 == 0) {
+                if (rank < size / 2) {
+                    inicio = 4;
+                    fin = image.rows / 2;
+
+
+                }
+                else {
+                    inicio = (image.rows / 2)+1;
                     fin = image.rows - 4;
                 }
-                inicio2 = 4;
-                fin2 = inicio2 + rangoBucle2 - 1;
-            }
-            else {
-                inicio = 4 + rangoBucle2 * ((rank-1) / 2);
-                fin = inicio + rangoBucle2 -1;
-                if (fin > image.rows -4) {
-                    fin = image.rows - 4;
+                //inicio += rangoBucle1 * (rank / 2);
+                //fin = inicio + rangoBucle1 - 1;
+                //if (fin > image.rows -4) {
+                //    fin = image.rows - 4;
+                //}
+                inicio2 = 4 + rangoBucle2 * ((rank) % (size/2));
+                fin2 = inicio2 + rangoBucle2 -1 ;// * ((rank +1) % (size/2))
+                if (fin2 > image.cols - 4) {
+                    fin2 = image.cols - 4;
                 }
-                inicio2 = inicio2 + rangoBucle2;
-                fin2 = image.cols - 4;
-            }
+            //}
+            //else {
+            //    inicio = 4 + rangoBucle2 * ((rank-1) / 2);
+            //    fin = inicio + rangoBucle2 -1;
+            //    if (fin > image.rows -4) {
+            //        fin = image.rows - 4;
+            //    }
+            //    inicio2 = inicio2 + rangoBucle2;
+            //    fin2 = image.cols - 4;
+            //}
         }
         else {
             //int turno = floor(size / 2);
@@ -403,7 +416,7 @@ int main(int argc, char* argv[])
         }
     }
 
-    //std::cout << "inicio: " << inicio << " fin: " << fin << " inicio2: " << inicio2 << " fin2: " << fin2 << " rank: " << rank << endl;
+    std::cout << "inicio: " << inicio << " fin: " << fin << " inicio2: " << inicio2 << " fin2: " << fin2 << " rank: " << rank << endl;
 
     for (int x = inicio; x <= fin; x++) {
         for (int y = inicio2; y <= fin2; y++) {
@@ -433,7 +446,7 @@ int main(int argc, char* argv[])
         std::memcpy(bytes, outputImage.data, sizeMat * sizeof(byte));
 
         //Join del resultado de los hilos en el hilo con la id = 0
-        MPI_Reduce(bytes, bytes2, sizeMat * sizeof(byte), MPI_INTEGER1, MPI_MAX, 0, MPI_COMM_WORLD);
+        MPI_Reduce(bytes, bytes2, sizeMat , MPI_INTEGER1, MPI_MAX, 0, MPI_COMM_WORLD);
 
 
 
@@ -448,17 +461,18 @@ int main(int argc, char* argv[])
             cout << "Execution Time: " << time << ", " << endl;
 
             //Reconversión de array numérico a Mat
-            //outputImage3 = Mat(outputImage.rows, outputImage.cols, CV_8UC3, bytes2).clone();
+            outputImage3 = Mat(outputImage.rows, outputImage.cols, CV_8UC3, bytes2).clone();
             
-            //Imagen resultante
-            //outputImage3.convertTo(prueba, CV_8UC3);
-            //imshow("Display window 2", prueba);
-            //waitKey(0);
 
             //imagen original
-            //image.convertTo(prueba, CV_8UC3);
-            //imshow("Display window 1", prueba);
-            //waitKey(0);
+            image.convertTo(prueba, CV_8UC3);
+            imshow("Display window 1", prueba);
+            waitKey(0);
+
+            //Imagen resultante
+            outputImage3.convertTo(prueba, CV_8UC3);
+            imshow("Display window 2", prueba);
+            waitKey(0);
 
         }
 
