@@ -114,8 +114,8 @@ uchar* array2;
 void abrirImagen() { // Abre la imagen
 
     string path = get_current_dir();
-    path = path + "\\skyline.jpg";
-    //path = path + "\\coche.jpg";
+    //path = path + "\\ruido.jpg";
+    path = path + "\\coche.jpg";
 
     image = imread(path, IMREAD_COLOR);
     image.convertTo(image, CV_8UC3);
@@ -182,6 +182,119 @@ void bucleExteriorParalelizado(int size, int rank) {  //suavizado 5*5, paraleliz
     }
 }
 
+void dobleBucleParalelizado(int size, int rank) {
+
+    // División del trabajo entre los hilos
+    bool hilos_pares = (size % 2) == 0;
+    int sizeBucle1 = size / 2;
+    int rangoBucle1;
+    int rangoBucle2;
+    if (size % 2 == 0) {
+        rangoBucle1 = floor((image.rows - 1) / (size / 2.0));
+        rangoBucle2 = floor(image.cols / 2);
+    }
+    else {
+        rangoBucle1 = floor((image.cols - 1) / floor(size / 2));
+        rangoBucle2 = floor(image.cols / (size - floor(size / 2)));
+        //std::cout << "rangoBucle2: " << rangoBucle2 << endl;
+    }
+
+
+    int inicio = 4;
+    int fin = inicio + rangoBucle1 - 1;
+    int inicio2 = 4;
+    int fin2 = inicio2 + rangoBucle2 - 1;;
+
+    if (size > 3) {
+        if (hilos_pares) {
+            if (rank % 2 == 0) {
+                inicio = 4;
+                inicio += rangoBucle1 * (rank / 2);
+                fin = inicio + rangoBucle1 - 1;
+                if (fin > image.rows - 4) {
+                    fin = image.rows - 4;
+                }
+                inicio2 = 4;
+                fin2 = inicio2 + rangoBucle2 - 1;
+            }
+            else {
+                inicio = 4 + rangoBucle2 * ((rank - 1) / 2);
+                fin = inicio + rangoBucle2 - 1;
+                if (fin > image.rows - 4) {
+                    fin = image.rows - 4;
+                }
+                inicio2 = inicio2 + rangoBucle2;
+                fin2 = image.cols - 4;
+            }
+        }
+        else {
+            //int turno = floor(size / 2);
+            //if (rank % turno == 0) {
+            //    inicio += rangoBucle1 * (rank / 2);
+            //    fin = inicio + rangoBucle1 - 1;
+            //}
+
+            if (rank % 2 != 0) {
+                inicio = 4;
+                fin = inicio + image.rows / 2;
+
+                inicio2 = 4 + rangoBucle1 * ((rank - 1) / 2);
+
+                fin2 = inicio2 + rangoBucle1 + rangoBucle1 * ((rank - 1) / 2) - 1;
+                if (fin2 > image.cols - 4) {
+                    fin2 = image.cols - 4;
+                }
+
+            }
+            else {
+                inicio = (image.rows / 2) + 5;
+                fin = image.rows - 4;
+
+                inicio2 = 4 + rangoBucle2 * (rank / 2);
+                fin2 = inicio2 + rangoBucle2 - 1;
+
+                if (fin2 > image.cols - 4) {
+                    fin2 = image.cols - 4;
+                }
+            }
+        }
+    }
+    else {
+        int rango2 = floor(image.cols / size);
+        fin = image.rows - 4;
+        inicio2 = 4 + rango2 * rank;
+
+        if (rank == (size - 1)) {
+            fin2 = image.cols - 4;
+        }
+        else {
+            fin2 = inicio2 + rango2 - 1;
+        }
+    }
+
+    //std::cout << "inicio: " << inicio << " fin: " << fin << " inicio2: " << inicio2 << " fin2: " << fin2 << " rank: " << rank << endl;
+
+    for (int x = inicio; x <= fin; x++) {
+        for (int y = inicio2; y <= fin2; y++) {
+            //if (rank == 2) {
+            //    std::cout << "x: " << x << " y: " << y << " rank: " << rank << endl;
+            //}
+            for (int z = 0; z <= 2; z++) {
+
+                outputImage.at<Vec3b>(x, y)[z] =
+                    (int)(image.at<Vec3b>(x - 2, y - 2)[z] + image.at<Vec3b>(x - 2, y - 1)[z] + image.at<Vec3b>(x - 2, y)[z] + image.at<Vec3b>(x - 2, y + 1)[z] + image.at<Vec3b>(x - 2, y + 2)[z]
+                        + image.at<Vec3b>(x - 1, y - 2)[z] + image.at<Vec3b>(x - 1, y - 1)[z] + image.at<Vec3b>(x - 1, y)[z] + image.at<Vec3b>(x - 1, y + 1)[z] + image.at<Vec3b>(x - 1, y + 2)[z]
+                        + image.at<Vec3b>(x, y - 2)[z] + image.at<Vec3b>(x, y - 1)[z] + image.at<Vec3b>(x, y)[z] + image.at<Vec3b>(x, y + 1)[z] + image.at<Vec3b>(x, y + 2)[z]
+                        + image.at<Vec3b>(x + 1, y - 2)[z] + image.at<Vec3b>(x + 1, y - 1)[z] + image.at<Vec3b>(x + 1, y)[z] + image.at<Vec3b>(x + 1, y + 1)[z] + image.at<Vec3b>(x + 1, y + 2)[z]
+                        + image.at<Vec3b>(x + 2, y - 2)[z] + image.at<Vec3b>(x + 2, y - 1)[z] + image.at<Vec3b>(x + 2, y)[z] + image.at<Vec3b>(x + 2, y + 1)[z] + image.at<Vec3b>(x + 2, y + 2)[z]) / 25;
+            }
+        }
+    }
+
+
+
+}
+
 
 
 
@@ -203,27 +316,108 @@ int main(int argc, char* argv[])
              
 
     // División del trabajo entre los hilos
-    int rangoBucle1 = floor(image.rows / size);
-
-    int i;
-    int inicio3 = 4 + rangoBucle1 * rank;
-    int fin = 3 + rangoBucle1 * (rank + 1);
-
-    if (rank + 1 == size) {
-        fin = image.rows - 4;
+    bool hilos_pares = (size % 2) == 0;
+    int sizeBucle1 = size / 2;
+    int rangoBucle1;
+    int rangoBucle2;
+    if (size % 2 == 0) {
+        rangoBucle1 = floor((image.rows - 1) / (size / 2.0));
+        rangoBucle2 = floor(image.cols / 2);
+    }
+    else {
+        rangoBucle1 = floor((image.cols - 1) / floor(size/2));
+        rangoBucle2 = floor(image.cols / (size - floor(size / 2)));
+        //std::cout << "rangoBucle2: " << rangoBucle2 << endl;
     }
 
-    //Suavizado de 5*5
-    for (int inicio2 = inicio3; inicio2 <= fin; inicio2++) {
-        for (int inicio = 4; inicio <= image.cols; inicio++) {
-            for (int z = 0; z <= 2; z++) {
 
-                outputImage.at<Vec3b>(inicio2, inicio)[z] =
-                    (int)(image.at<Vec3b>(inicio2 - 2, inicio - 2)[z] + image.at<Vec3b>(inicio2 - 2, inicio - 1)[z] + image.at<Vec3b>(inicio2 - 2, inicio)[z] + image.at<Vec3b>(inicio2 - 2, inicio + 1)[z] + image.at<Vec3b>(inicio2 - 2, inicio + 2)[z]
-                        + image.at<Vec3b>(inicio2 - 1, inicio - 2)[z] + image.at<Vec3b>(inicio2 - 1, inicio - 1)[z] + image.at<Vec3b>(inicio2 - 1, inicio)[z] + image.at<Vec3b>(inicio2 - 1, inicio + 1)[z] + image.at<Vec3b>(inicio2 - 1, inicio + 2)[z]
-                        + image.at<Vec3b>(inicio2, inicio - 2)[z] + image.at<Vec3b>(inicio2, inicio - 1)[z] + image.at<Vec3b>(inicio2, inicio)[z] + image.at<Vec3b>(inicio2, inicio + 1)[z] + image.at<Vec3b>(inicio2, inicio + 2)[z]
-                        + image.at<Vec3b>(inicio2 + 1, inicio - 2)[z] + image.at<Vec3b>(inicio2 + 1, inicio - 1)[z] + image.at<Vec3b>(inicio2 + 1, inicio)[z] + image.at<Vec3b>(inicio2 + 1, inicio + 1)[z] + image.at<Vec3b>(inicio2 + 1, inicio + 2)[z]
-                        + image.at<Vec3b>(inicio2 + 2, inicio - 2)[z] + image.at<Vec3b>(inicio2 + 2, inicio - 1)[z] + image.at<Vec3b>(inicio2 + 2, inicio)[z] + image.at<Vec3b>(inicio2 + 2, inicio + 1)[z] + image.at<Vec3b>(inicio2 + 2, inicio + 2)[z]) / 25;
+    int inicio = 4;
+    int fin = inicio + rangoBucle1 - 1;
+    int inicio2 = 4;
+    int fin2 = inicio2 + rangoBucle2 - 1;;
+
+    if (size > 3) {
+        if (hilos_pares) {
+            if (rank % 2 == 0) {
+                inicio = 4;
+                inicio += rangoBucle1 * (rank / 2);
+                fin = inicio + rangoBucle1 - 1;
+                if (fin > image.rows -4) {
+                    fin = image.rows - 4;
+                }
+                inicio2 = 4;
+                fin2 = inicio2 + rangoBucle2 - 1;
+            }
+            else {
+                inicio = 4 + rangoBucle2 * ((rank-1) / 2);
+                fin = inicio + rangoBucle2 -1;
+                if (fin > image.rows -4) {
+                    fin = image.rows - 4;
+                }
+                inicio2 = inicio2 + rangoBucle2;
+                fin2 = image.cols - 4;
+            }
+        }
+        else {
+            //int turno = floor(size / 2);
+            //if (rank % turno == 0) {
+            //    inicio += rangoBucle1 * (rank / 2);
+            //    fin = inicio + rangoBucle1 - 1;
+            //}
+
+            if (rank % 2 != 0) {
+                inicio = 4;
+                fin = inicio + image.rows / 2;
+
+                inicio2 = 4 + rangoBucle1 * ((rank-1)/2);
+
+                fin2 = inicio2 + rangoBucle1 + rangoBucle1 * ((rank - 1) / 2) -1;
+                if (fin2 > image.cols -4) {
+                    fin2 = image.cols - 4;
+                }
+
+            }
+            else {
+                inicio = (image.rows / 2) + 5;
+                fin = image.rows - 4;
+
+                inicio2 = 4 + rangoBucle2 * (rank/2);
+                fin2 = inicio2 + rangoBucle2 - 1;
+                
+                if (fin2 > image.cols -4) {
+                    fin2 = image.cols - 4;
+                }
+            }
+        }
+    }
+    else {
+        int rango2 = floor(image.cols / size);
+        fin = image.rows -4;
+        inicio2 = 4 + rango2 * rank;
+
+        if (rank == (size - 1)) {
+            fin2 = image.cols - 4;
+        }
+        else {
+            fin2 = inicio2 + rango2 - 1;
+        }
+    }
+
+    //std::cout << "inicio: " << inicio << " fin: " << fin << " inicio2: " << inicio2 << " fin2: " << fin2 << " rank: " << rank << endl;
+
+    for (int x = inicio; x <= fin; x++) {
+        for (int y = inicio2; y <= fin2; y++) {
+            //if (rank == 2) {
+            //    std::cout << "x: " << x << " y: " << y << " rank: " << rank << endl;
+            //}
+            for (int z = 0; z <= 2; z++) {
+                
+                outputImage.at<Vec3b>(x, y)[z] =
+                    (int)(image.at<Vec3b>(x - 2, y - 2)[z] + image.at<Vec3b>(x - 2, y - 1)[z] + image.at<Vec3b>(x - 2, y)[z] + image.at<Vec3b>(x - 2, y + 1)[z] + image.at<Vec3b>(x - 2, y + 2)[z]
+                        + image.at<Vec3b>(x - 1, y - 2)[z] + image.at<Vec3b>(x - 1, y - 1)[z] + image.at<Vec3b>(x - 1, y)[z] + image.at<Vec3b>(x - 1, y + 1)[z] + image.at<Vec3b>(x - 1, y + 2)[z]
+                        + image.at<Vec3b>(x, y - 2)[z] + image.at<Vec3b>(x, y - 1)[z] + image.at<Vec3b>(x, y)[z] + image.at<Vec3b>(x, y + 1)[z] + image.at<Vec3b>(x, y + 2)[z]
+                        + image.at<Vec3b>(x + 1, y - 2)[z] + image.at<Vec3b>(x + 1, y - 1)[z] + image.at<Vec3b>(x + 1, y)[z] + image.at<Vec3b>(x + 1, y + 1)[z] + image.at<Vec3b>(x + 1, y + 2)[z]
+                        + image.at<Vec3b>(x + 2, y - 2)[z] + image.at<Vec3b>(x + 2, y - 1)[z] + image.at<Vec3b>(x + 2, y)[z] + image.at<Vec3b>(x + 2, y + 1)[z] + image.at<Vec3b>(x + 2, y + 2)[z]) / 25;
             }
         }
     }
@@ -239,21 +433,22 @@ int main(int argc, char* argv[])
         std::memcpy(bytes, outputImage.data, sizeMat * sizeof(byte));
 
         //Join del resultado de los hilos en el hilo con la id = 0
-        MPI_Reduce(bytes, bytes2, sizeMat, MPI_INTEGER1, MPI_MAX, 0, MPI_COMM_WORLD);
+        MPI_Reduce(bytes, bytes2, sizeMat * sizeof(byte), MPI_INTEGER1, MPI_MAX, 0, MPI_COMM_WORLD);
 
 
 
 
         if (rank == 0) {
             
-            //Reconversión de array numérico a Mat
-            //outputImage3 = Mat(outputImage.rows, outputImage.cols, CV_8UC3, bytes2).clone();
+
 
             //Se para el temporizador
             t1 = clock();
             double time = (double(t1 - t0) / CLOCKS_PER_SEC);
             cout << "Execution Time: " << time << ", " << endl;
 
+            //Reconversión de array numérico a Mat
+            //outputImage3 = Mat(outputImage.rows, outputImage.cols, CV_8UC3, bytes2).clone();
             
             //Imagen resultante
             //outputImage3.convertTo(prueba, CV_8UC3);

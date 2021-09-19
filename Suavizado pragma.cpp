@@ -169,14 +169,20 @@ int main(int argc, char* argv[])
 
         t0 = clock();
         int count = 0;
+#pragma omp parallel for num_threads(2)
+        for (int x = 3; x <= image.rows - 4; x++) {
+            #pragma omp parallel for num_threads(2)
+            for (int y = 3; y <= image.cols - 4; y++) {
+                for (int z = 0; z <= 2; z++) {
 
-        //Conversión a gris  
-        for (int x = 1; x <= image.rows - 2; x++) {
-            #pragma omp parallel for num_threads(6)
-            for (int y = 1; y <= image.cols - 2; y++) {
-                outputImage.at<uchar>(x, y * 3) = (int)image.at<Vec3b>(x, y)[0] * 0.1140 + (int)image.at<Vec3b>(x, y)[1] * 0.5870 + (int)image.at<Vec3b>(x, y)[2] * 0.2989;
-                outputImage.at<uchar>(x, y * 3 + 1) = (int)image.at<Vec3b>(x, y)[0] * 0.1140 + (int)image.at<Vec3b>(x, y)[1] * 0.5870 + (int)image.at<Vec3b>(x, y)[2] * 0.2989;
-                outputImage.at<uchar>(x, y * 3 + 2) = (int)image.at<Vec3b>(x, y)[0] * 0.1140 + (int)image.at<Vec3b>(x, y)[1] * 0.5870 + (int)image.at<Vec3b>(x, y)[2] * 0.2989;
+                    outputImage.at<Vec3b>(x, y)[z] =
+                        (int)(image.at<Vec3b>(x - 2, y - 2)[z] + image.at<Vec3b>(x - 2, y - 1)[z] + image.at<Vec3b>(x - 2, y)[z] + image.at<Vec3b>(x - 2, y + 1)[z] + image.at<Vec3b>(x - 2, y + 2)[z]
+                            + image.at<Vec3b>(x - 1, y - 2)[z] + image.at<Vec3b>(x - 1, y - 1)[z] + image.at<Vec3b>(x - 1, y)[z] + image.at<Vec3b>(x - 1, y + 1)[z] + image.at<Vec3b>(x - 1, y + 2)[z]
+                            + image.at<Vec3b>(x, y - 2)[z] + image.at<Vec3b>(x, y - 1)[z] + image.at<Vec3b>(x, y)[z] + image.at<Vec3b>(x, y + 1)[z] + image.at<Vec3b>(x, y + 2)[z]
+                            + image.at<Vec3b>(x + 1, y - 2)[z] + image.at<Vec3b>(x + 1, y - 1)[z] + image.at<Vec3b>(x + 1, y)[z] + image.at<Vec3b>(x + 1, y + 1)[z] + image.at<Vec3b>(x + 1, y + 2)[z]
+                            + image.at<Vec3b>(x + 2, y - 2)[z] + image.at<Vec3b>(x + 2, y - 1)[z] + image.at<Vec3b>(x + 2, y)[z] + image.at<Vec3b>(x + 2, y + 1)[z] + image.at<Vec3b>(x + 2, y + 2)[z]) / 25;
+
+                }
             }
         }
 

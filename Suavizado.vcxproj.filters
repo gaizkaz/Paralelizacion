@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Suavizado MPI.cpp">
+    <ClCompile Include="Suavizado pragma.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>

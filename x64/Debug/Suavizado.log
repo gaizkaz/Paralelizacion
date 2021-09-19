@@ -1,7 +1,22 @@
-﻿  Suavizado.cpp
-C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado.cpp(218,63): warning C4267: 'inicializando': conversión de 'size_t' a 'int'; posible pérdida de datos
-C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado.cpp(139,17): warning C4101: 'request': variable local sin referencia
-C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado.cpp(140,16): warning C4101: 'status': variable local sin referencia
-C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado.cpp(149,9): warning C4101: 'i': variable local sin referencia
-C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado.cpp(264,9): warning C4101: 'i': variable local sin referencia
+﻿  Suavizado MPI.cpp
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado MPI.cpp(131,21): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado MPI.cpp(133,9): warning C4101: 'i': variable local sin referencia
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado MPI.cpp(160,21): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado MPI.cpp(162,9): warning C4101: 'i': variable local sin referencia
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado MPI.cpp(193,28): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado MPI.cpp(194,28): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado MPI.cpp(197,28): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado MPI.cpp(198,28): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado MPI.cpp(223,23): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado MPI.cpp(242,20): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado MPI.cpp(299,28): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado MPI.cpp(300,28): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado MPI.cpp(303,28): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado MPI.cpp(304,28): warning C4244: '=': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado MPI.cpp(329,23): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado MPI.cpp(348,20): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado MPI.cpp(377,67): warning C4267: 'inicializando': conversión de 'size_t' a 'int'; posible pérdida de datos
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado MPI.cpp(289,17): warning C4101: 'request': variable local sin referencia
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado MPI.cpp(290,16): warning C4101: 'status': variable local sin referencia
+C:\Users\gaizk\source\repos\Suavizado\Suavizado\Suavizado MPI.cpp(436,9): warning C4101: 'i': variable local sin referencia
   Suavizado.vcxproj -> C:\Users\gaizk\source\repos\Suavizado\x64\Debug\Suavizado.exe
